@@ -4,19 +4,20 @@ import com.smartclinic.app.models.Patient;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.Optional; // Cần import Optional để xử lý trường hợp không tìm thấy
+import java.util.Optional; 
 
 @Repository
 public interface PatientRepository extends JpaRepository<Patient, Long> {
     
-    // PHƯƠNG THỨC CẦN THIẾT: Tìm bệnh nhân theo địa chỉ email
+    // PHƯƠNG THỨC 1: Tìm bệnh nhân theo địa chỉ email (Đã có)
+    Optional<Patient> findByEmail(String email);
+    
+    // PHƯƠNG THỨC 2: TÌM BỆNH NHÂN THEO EMAIL HOẶC SỐ ĐIỆN THOẠI (YÊU CẦU BỊ THIẾU)
     /**
-     * Retrieves a patient entity by its email address.
-     * Used for login or unique identification.
-     * @param email The email address to search for.
+     * Retrieves a patient entity by their email address OR phone number.
+     * @param email The email address.
+     * @param phoneNumber The phone number.
      * @return An Optional containing the found Patient or an empty Optional if none found.
      */
-    Optional<Patient> findByEmail(String email);
-
-    // Có thể thêm các phương thức truy vấn tùy chỉnh khác ở đây
+    Optional<Patient> findByEmailOrPhoneNumber(String email, String phoneNumber);
 }
