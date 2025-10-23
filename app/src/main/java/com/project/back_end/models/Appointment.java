@@ -1,65 +1,64 @@
 package com.smartclinic.app.models;
 
-import jakarta.persistence.*; // Nhập tất cả các JPA annotations
+import jakarta.persistence.*;
+import jakarta.validation.constraints.Future;
+import jakarta.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "appointments") // Tùy chọn: Đặt tên bảng rõ ràng
+@Table(name = "appointments")
 public class Appointment {
 
-    // 1. Primary Key
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    // THÊM Validation: @NotNull và @Future
+    @NotNull(message = "Appointment time cannot be null")
+    @Future(message = "Appointment time must be in the future")
     private LocalDateTime appointmentTime;
-    private String status;
+    
+    private String status = "SCHEDULED";
 
-    // 2. MỐI QUAN HỆ CẦN THIẾT: Many-to-One với Doctor
-    // Mỗi cuộc hẹn thuộc về MỘT bác sĩ
-    @ManyToOne(fetch = FetchType.LAZY) // LAZY: chỉ tải khi cần thiết
-    @JoinColumn(name = "doctor_id", nullable = false) // Khoá ngoại
+    // THÊM Mối quan hệ: ManyToOne với Doctor
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "doctor_id", nullable = false)
     private Doctor doctor;
 
-    // 3. MỐI QUAN HỆ CẦN THIẾT: Many-to-One với Patient
-    // Mỗi cuộc hẹn thuộc về MỘT bệnh nhân
+    // THÊM Mối quan hệ: ManyToOne với Patient
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "patient_id", nullable = false)
     private Patient patient;
     
-    // Thêm các trường khác nếu cần thiết (ví dụ: Lý do, Ghi chú)
     private String reason;
     
-    // 4. Constructors (Cần thiết cho JPA)
-    public Appointment() {
-    }
+    // Constructors (Mặc định và có tham số)
+    public Appointment() { }
 
-    // Constructor hữu ích để tạo cuộc hẹn
     public Appointment(LocalDateTime appointmentTime, Doctor doctor, Patient patient, String reason) {
         this.appointmentTime = appointmentTime;
-        this.status = "SCHEDULED"; // Mặc định là đã lên lịch
+        this.status = "SCHEDULED";
         this.doctor = doctor;
         this.patient = patient;
         this.reason = reason;
     }
 
-    // 5. Getters and Setters (Bạn phải thêm đầy đủ các phương thức này)
+    // Getters and Setters (Chỉ liệt kê một vài ví dụ, bạn cần thêm đầy đủ)
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
+
+    public LocalDateTime getAppointmentTime() { return appointmentTime; }
+    public void setAppointmentTime(LocalDateTime appointmentTime) { this.appointmentTime = appointmentTime; }
     
-    public Long getId() {
-        return id;
-    }
+    public Doctor getDoctor() { return doctor; }
+    public void setDoctor(Doctor doctor) { this.doctor = doctor; }
     
-    public void setAppointmentTime(LocalDateTime appointmentTime) {
-        this.appointmentTime = appointmentTime;
-    }
+    public Patient getPatient() { return patient; }
+    public void setPatient(Patient patient) { this.patient = patient; }
     
-    // ... các getters/setters khác cho Doctor, Patient, status, v.v. ...
+    public String getStatus() { return status; }
+    public void setStatus(String status) { this.status = status; }
     
-    public Doctor getDoctor() {
-        return doctor;
-    }
-    
-    public Patient getPatient() {
-        return patient;
-    }
+    public String getReason() { return reason; }
+    public void setReason(String reason) { this.reason = reason; }
 }
