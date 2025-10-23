@@ -4,11 +4,13 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 @Entity
+@Table(name = "doctors") // Chỉ định tên bảng
 public class Doctor {
 
-    // THÊM: @Id và @GeneratedValue
+    // Primary Key và Tự động tăng (Id và GeneratedValue)
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -18,13 +20,13 @@ public class Doctor {
     private String specialization;
     private String licenseNumber;
     private String email;
-    private String password; // Trong thực tế, cần xử lý bảo mật cho mật khẩu
+    private String password; // Lưu ý bảo mật: Cần mã hóa (hashing) trong ứng dụng thực tế
 
-    // THÊM: Constructor mặc định (cần thiết cho JPA)
+    // 1. Constructor mặc định (Cần thiết cho JPA)
     public Doctor() {
     }
 
-    // THÊM: Constructor có tham số (tùy chọn nhưng hữu ích)
+    // 2. Constructor có tham số (Hữu ích để tạo đối tượng mới)
     public Doctor(String firstName, String lastName, String specialization, String licenseNumber, String email, String password) {
         this.firstName = firstName;
         this.lastName = lastName;
@@ -34,8 +36,7 @@ public class Doctor {
         this.password = password;
     }
     
-    // THÊM: Getters and Setters cho tất cả các trường
-    // (Bạn nên thêm đầy đủ các phương thức này ở đây)
+    // 3. GETTERS và SETTERS (ĐÁP ỨNG YÊU CẦU BỊ THIẾU)
     
     public Long getId() {
         return id;
@@ -44,11 +45,52 @@ public class Doctor {
     public void setId(Long id) {
         this.id = id;
     }
-    
-    // ... các getters/setters khác ...
-    
+
     public String getFirstName() {
         return firstName;
     }
-    // ...
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getSpecialization() {
+        return specialization;
+    }
+
+    public void setSpecialization(String specialization) {
+        this.specialization = specialization;
+    }
+
+    public String getLicenseNumber() {
+        return licenseNumber;
+    }
+
+    public void setLicenseNumber(String licenseNumber) {
+        this.licenseNumber = licenseNumber;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
 }
